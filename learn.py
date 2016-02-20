@@ -57,7 +57,7 @@ def main(list):
 	target = open(outfile,'w')
 	for i in range(0,len(models)):
 		for j in range(0,len(models[i])):
-			target.write('[' + models[i][j] + ']');
+			target.write('[' + models[i][j] + '] ');
 	
 # end main
 
