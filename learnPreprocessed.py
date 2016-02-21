@@ -195,8 +195,8 @@ def train(splits,numsplits):
 				countLN[labels[i]] = countLN[labels[i]] + 1
 			else:
 				countNN[labels[i]] = countNN[labels[i]] + 1
-		curmodel.weights = map(add,countLN,countNN)
-		curmodel.weights = map(div,countLN,curmodel.weights)
+		currmodel.weights = map(add,countLN,countNN)
+		currmodel.weights = map(div,countLN,curmodel.weights)
 		# run and evaluate test data
 		scoreWeights = [];
 		for i in range(0,len(splits(testSplit))):
