@@ -173,7 +173,7 @@ def train(splits,numsplits):
 					allDescriptors = np.append(allDescriptors,descriptors)
 					allKeyClasses = np.append(allKeyClasses,keyClasses)
 		# k-means cluster all features
-		np.reshape(allDescriptors,(len(allDescriptors)/128,128))
+		allDescriptors = np.reshape(allDescriptors,(len(allDescriptors)/128,128))
 		desc = np.float32(allDescriptors)
 		criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER,20,1.0)
 		flags = cv2.KMEANS_RANDOM_CENTERS
