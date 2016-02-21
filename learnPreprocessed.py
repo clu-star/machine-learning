@@ -182,10 +182,6 @@ def train(splits,numsplits):
 		# parse model probabilities at each cluster
 		countLN = []
 		countNN = []
-		print len(labels)
-		print len(desc)
-		print len(allKeyPointsX)
-		print len(allKeyClasses)
 		for i in range(0,len(labels)):
 			if (labels[i] >= len(countLN)):
 					while (labels[i] >= len(countLN)):
@@ -196,7 +192,7 @@ def train(splits,numsplits):
 			else:
 				countNN[labels[i]] = countNN[labels[i]] + 1
 		currmodel.weights = map(add,countLN,countNN)
-		currmodel.weights = map(div,countLN,curmodel.weights)
+		currmodel.weights = map(div,countLN,currmodel.weights)
 		# run and evaluate test data
 		scoreWeights = [];
 		for i in range(0,len(splits(testSplit))):
