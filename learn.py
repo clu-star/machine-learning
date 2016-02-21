@@ -142,7 +142,6 @@ def train(splits,numsplits):
 				for j in range(0,len(splits[i])): # for each img in split
 					# detect features with SIFT
 					#sift = cv2.xfeatures2d.SIFT_create()
-					#sift = cv2.SIFT()
 					#keyPoints,descriptors = sift.detectAndCompute(splits[i][j],None)
 					keyPoints,descriptors = cv2.SIFT().detectAndCompute(splits[i][j],None)
 					keyClasses = []
