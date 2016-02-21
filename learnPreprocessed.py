@@ -140,7 +140,8 @@ def split(list,numsplits):
 def train(splits,numsplits):
 	models = []
 	for testSplit in range(0,numsplits):
-		allKeyPoints = np.array([])
+		allKeyPointsX = np.array([])
+		allKeyPointsY = np.array([])
 		allDescriptors = np.array([])
 		allKeyClasses = []
 		for i in range(0,numsplits):
@@ -152,7 +153,8 @@ def train(splits,numsplits):
 					haskeys = False
 					if len(splits[i][j].auxdata):
 						hasKeys = True
-						keyPoints = [splits[i][j].auxdata[0],splits[i][j].auxdata[1]]
+						keyPointsX = splits[i][j].auxdata[0]
+						keyPointsY = splits[i][j].auxdata[1]
 					keyClasses = []
 					# classify the features based on if they are located
 					# where we expect nodules to be
@@ -168,7 +170,8 @@ def train(splits,numsplits):
 							keyClasses.append(True) # is LN
 						else:
 							keyClasses.append(False) # is NN (not nodule)
-					allKeyPoints = np.append(allKeyPoints,keyPoints)
+					allKeyPointsX = np.append(allKeyPointsX,keyPointsX)
+					allKeyPointsY = np.append(allKeyPointsY,keyPointsY)
 					allDescriptors = np.append(allDescriptors,descriptors)
 					allKeyClasses = np.append(allKeyClasses,keyClasses)
 		# k-means cluster all features
