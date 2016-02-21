@@ -59,8 +59,8 @@ class Model:
 		
 	def printout(self):
 		outstring = str(self.score)
-		outstring = outstring + ' [' + ','.join(self.weights) + '] '
-		outstring = outstring + ' [' + ','.join(self.centers) + '] '
+		outstring = outstring + ' [' + ','.join(map(str,self.weights)) + '] '
+		outstring = outstring + ' [' + ','.join(map(str,self.centers)) + '] '
 		return outstring
 # end class model
 
