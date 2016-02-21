@@ -140,9 +140,9 @@ def train(splits,numsplits):
 			if (i != testSplit):
 				for j in range(0,len(splits[i])): # for each img in split
 					# detect features with SIFT
-					#sift = cv2.xfeatures2d.SIFT_create()
-					#keyPoints,descriptors = sift.detectAndCompute(splits[i][j],None)
-					keyPoints,descriptors = cv2.SIFT().detectAndCompute(splits[i][j],None)
+					sift = cv2.xfeatures2d.SIFT_create()
+					keyPoints,descriptors = sift.detectAndCompute(splits[i][j],None)
+					#keyPoints,descriptors = cv2.SIFT().detectAndCompute(splits[i][j],None)
 					keyClasses = []
 					# classify the features based on if they are located
 					# where we expect nodules to be
