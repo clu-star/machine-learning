@@ -43,11 +43,8 @@ class img:
 	file2 = open('descriptions/'+filename,"rb")
 	reader = csv.reader(file2)
 	for row in reader:
-		print row
 		self.cvdata.append(map(float,row))
 	self.cvdata = np.array(self.cvdata)
-	print len(self.cvdata)
-	print len(self.cvdata[1])
 	self.auxdata = self.cvdata[:,128:132] # 4-vector for each feature: row, col, scale, orientation
 	self.cvdata = self.cvdata[:,0:128] # 128-vector for feature description
 
