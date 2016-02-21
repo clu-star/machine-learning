@@ -83,7 +83,7 @@ def softmax(w,t=1.0):
 
 # from a model and an image, determine if that image contains nodules
 def predict(model,image):
-	predictions = [0,0]
+	prediction = 0
 	# get img features
 	descriptors = image.cvdata
 	# compare each feature with model cluster centers
@@ -98,9 +98,9 @@ def predict(model,image):
 		currCenterDistances = softmax(currCenterDistances)
 		currPrediction = sum(currCenterDistances)*(len(currCenterDistances))
 		# if this is most similar to nodule so far...
-		if (currPrediction[0] > predictions[0]):
-			predictions = currPrediction
-	return predictions
+		if (currPrediction > prediction):
+			prediction = currPrediction
+	return prediction
 	
 # end predict
 
