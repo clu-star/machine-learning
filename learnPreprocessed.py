@@ -211,6 +211,7 @@ def main(list):
 	if len(sys.argv) != 2 :
 		print("usage: python learn.py <output-filename>")
 	else:
+		outfile = sys.argv[1]
 		# read images
 		files = os.listdir("./descriptions")
 		featurearray = []
