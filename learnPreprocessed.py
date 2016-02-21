@@ -88,26 +88,25 @@ def predict(model,image):
 	descriptors = image.cvdata
 	# compare each feature with model cluster centers
 	mostSimilarToNoduleScore = 0 # the most nodule-like element
-	for j in range(0,len(descriptors)):
-		for i in range(0,len(features)): # for each detected feature...
-			currCenterDistances = []
-			# find distances to each cluster center
-			for j in range(0,len(model.centers)):
-				arr = map(mul,model.centers[i],model.weights[i])
-				arr = map(mul,arr,descriptors[i])
-				currCenterDistances.append(sum(arr))
-			currCenterDistances = softmax(currCenterDistances);
-			probLN = 0;
-			probNN = 0;
-			for j in range(0,len(model.centers)):
-				if model.centers[j].isNodule:
-					probLN = probLN + currCenterDistances[j]
-				else:
-					probNN = probNN + currCenterDistances[j]
-			currPrediction = [probLN,probNN]
-			# if this is most similar to nodule so far...
-			if (currPrediction[0] > predictions[0]):
-				predictions = currPrediction
+	for i in range(0,len(descriptors)): # for each detected feature...
+		currCenterDistances = []
+		# find distances to each cluster center
+		for j in range(0,len(model.centers)):
+			arr = map(mul,model.centers[i],model.weights[i])
+			arr = map(mul,arr,descriptors[i])
+			currCenterDistances.append(sum(arr))
+		currCenterDistances = softmax(currCenterDistances);
+		probLN = 0;
+		probNN = 0;
+		for j in range(0,len(model.centers)):
+			if model.centers[j].isNodule:
+				probLN = probLN + currCenterDistances[j]
+			else:
+				probNN = probNN + currCenterDistances[j]
+		currPrediction = [probLN,probNN]
+		# if this is most similar to nodule so far...
+		if (currPrediction[0] > predictions[0]):
+			predictions = currPrediction
 	return predictions
 	
 # end predict
