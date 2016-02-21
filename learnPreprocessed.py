@@ -44,9 +44,8 @@ class img:
 	for row in reader:
 		self.cvdata.append(row)
 	self.cvdata = np.array(self.cvdata)
-	self.cvdata = np.hsplit(self.cvdata,np.array([128,4]))
-	self.auxdata = self.cvdata[1] # 4-vector for each feature: row, col, scale, orientation
-	self.cvdata = self.cvdata[0] # 128-vector for feature description
+	self.auxdata = self.cvdata[:,124:128] # 4-vector for each feature: row, col, scale, orientation
+	self.cvdata = self.cvdata[:,0:124] # 128-vector for feature description
 
 # model class - stores the model fit and centers
 class Model:
