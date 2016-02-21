@@ -2,7 +2,7 @@
 # 	N = number of images
 #	X*Y = dimensions of each image
 
-import Math
+import math
 import random
 import cv2
 import os
@@ -113,7 +113,7 @@ def predict(model,img):
 def split(list,numsplits):
 	random.shuffle(list)
 	numImgs = len(list)
-	imgsPerSplit = Math.floor(numImgs/numsplits)
+	imgsPerSplit = math.floor(numImgs/numsplits)
 	splits = []
 	nextadd = 0
 	for i in range(0,numsplits):
