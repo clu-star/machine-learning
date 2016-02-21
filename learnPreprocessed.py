@@ -148,7 +148,9 @@ def train(splits,numsplits):
 				for j in range(0,len(splits[i])): # for each img in split
 					# detect features with SIFT
 					descriptors = splits[i][j].cvdata
-					keyPoints = [splits[i][j].auxdata[0],splits[i][j].auxdata[1]]
+					keyPoints = []
+					if len(splits[i][j].auxdata):
+						keyPoints = [splits[i][j].auxdata[0],splits[i][j].auxdata[1]]
 					keyClasses = []
 					# classify the features based on if they are located
 					# where we expect nodules to be
