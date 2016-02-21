@@ -60,7 +60,7 @@ class Model:
 	def printout(self):
 		outstring = str(self.score)
 		outstring = outstring + ' [' + ','.join(map(str,self.weights)) + '] '
-		outstring = outstring + ' [' + ','.join(map(str,self.centers)) + '] '
+		outstring = outstring + ' [' + ','.join(map(str,self.centers)) + '] \n'
 		return outstring
 # end class model
 
@@ -177,7 +177,7 @@ def train(splits,numsplits):
 		criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER,20,1.0)
 		flags = cv2.KMEANS_RANDOM_CENTERS
 		currmodel = Model() # create a Model object
-		compactness,labels,currmodel.clusters = cv2.kmeans(desc,40,None,criteria,20,flags)
+		compactness,labels,currmodel.centers = cv2.kmeans(desc,40,None,criteria,20,flags)
 		# parse model probabilities at each cluster
 		countLN = []
 		countNN = []
@@ -191,7 +191,7 @@ def train(splits,numsplits):
 			else:
 				countNN[labels[i]] = countNN[labels[i]] + 1
 		currmodel.weights = map(add,countLN,countNN)
-		currmodel.weights = map(div,countLN,currmodel.weights)
+		currmodel.weights = map(div,map(float,countLN),map(float,currmodel.weights))
 		# run and evaluate test data
 		scoreWeights = [];
 		for i in range(0,len(splits[testSplit])):
