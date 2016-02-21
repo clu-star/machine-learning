@@ -181,9 +181,9 @@ def train(splits,numsplits):
 		countLN = []
 		countNN = []
 		print len(labels)
-		print len(allKeyClasses)
-		print len(allKeyPoints[0])
 		print len(allDescriptors)
+		print len(allKeyPoints[0])
+		print len(allKeyClasses)
 		for i in range(0,len(labels)):
 			if (labels[i] >= len(countLN)):
 					while (labels[i] >= len(countLN)):
