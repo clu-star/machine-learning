@@ -44,6 +44,7 @@ class img:
 	reader = csv.reader(file2)
 	for row in reader:
 		self.cvdata = zip(self.cvdata,map(float,row))
+	print len(self.cvdata)
 	self.cvdata = np.array(self.cvdata)
 	print len(self.cvdata)
 	print len(self.cvdata[1])
