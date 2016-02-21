@@ -202,7 +202,9 @@ def main(list):
 	else:
 		# read images
 		files = os.listdir("./descriptions")
+		print("foo")
 		featurearray = []
+		print("hhh")
 		for x in files:
 			print(x)
 			a = img(x)
