@@ -62,6 +62,10 @@ class Model:
 		outstring = outstring + ' [' + ','.join(map(str,self.weights)) + '] '
 		outstring = outstring + ' [' + ','.join(map(str,self.centers)) + '] \n'
 		return outstring
+		
+	def normalize(self):
+		for i in range(0,len(centers)):
+			self.centers[i] = self.centers[i]/math.sqrt(sum(map(mul,self.centers[i],self.centers[i])))
 # end class model
 
 #============
@@ -86,6 +90,7 @@ def predict(model,image):
 	prediction = 0
 	# get img features
 	descriptors = image.cvdata
+	model.normalize()
 	# compare each feature with model cluster centers
 	mostSimilarToNoduleScore = 0 # the most nodule-like element
 	for i in range(0,len(descriptors)): # for each detected feature...
@@ -94,7 +99,7 @@ def predict(model,image):
 		for j in range(0,len(model.centers)):
 			arr = model.weights[j]*model.centers[j]
 			arr = map(mul,arr,descriptors[i])
-			currCenterDistances.append(sum(arr))
+			currCenterDistances.append(float(sum(arr))/128.0)
 		currCenterDistances = softmax(currCenterDistances)
 		currPrediction = sum(currCenterDistances)*(len(currCenterDistances))
 		# if this is most similar to nodule so far...
