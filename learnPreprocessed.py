@@ -40,7 +40,8 @@ class img:
 		    break;
 
 	self.cvdata = []
-	reader = csv.reader(('descriptions/'+filename), "rb")
+	fname = 'descriptions/'+filename
+	reader = csv.reader(fname, "rb")
 	for row in reader:
 		self.cvdata.append(map(float,row))
 	self.cvdata = np.array(self.cvdata)
