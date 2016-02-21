@@ -96,14 +96,7 @@ def predict(model,image):
 			arr = map(mul,arr,descriptors[i])
 			currCenterDistances.append(sum(arr))
 		currCenterDistances = softmax(currCenterDistances)
-		probLN = 0;
-		probNN = 0;
-		for j in range(0,len(model.centers)):
-			if model.centers[j].hasNodule:
-				probLN = probLN + currCenterDistances[j]
-			else:
-				probNN = probNN + currCenterDistances[j]
-		currPrediction = [probLN,probNN]
+		currPrediction = sum(currCenterDistances)*(len(currCenterDistances))
 		# if this is most similar to nodule so far...
 		if (currPrediction[0] > predictions[0]):
 			predictions = currPrediction
