@@ -154,8 +154,8 @@ def train(splits,numsplits):
 					haskeys = False
 					if len(splits[i][j].auxdata):
 						hasKeys = True
-						keyPointsX = splits[i][j].auxdata[0]
-						keyPointsY = splits[i][j].auxdata[1]
+						keyPointsX = splits[i][j].auxdata[:,0]
+						keyPointsY = splits[i][j].auxdata[:,1]
 					keyClasses = []
 					# classify the features based on if they are located
 					# where we expect nodules to be
