@@ -149,7 +149,9 @@ def train(splits,numsplits):
 					# detect features with SIFT
 					descriptors = splits[i][j].cvdata
 					keyPoints = []
+					haskeys = False
 					if len(splits[i][j].auxdata):
+						hasKeys = True
 						keyPoints = [splits[i][j].auxdata[0],splits[i][j].auxdata[1]]
 					keyClasses = []
 					# classify the features based on if they are located
@@ -158,7 +160,10 @@ def train(splits,numsplits):
 					noduleMaxX = splits[i][j].noduleX + splits[i][j].noduleSize*PXperCM/2.0
 					noduleMinY = splits[i][j].noduleY - splits[i][j].noduleSize*PXperCM/2.0
 					noduleMaxY = splits[i][j].noduleY + splits[i][j].noduleSize*PXperCM/2.0
-					for k in range(0,len(keyPoints[0])):
+					max = 0
+					if hasKeys:
+						max = len(keyPoints[0])
+					for k in range(0,max):
 						if ((keyPoints[0][k] > noduleMinX) and (keyPoints[0][k] < noduleMaxX) and (keyPoints[1][k] > noduleMinY) and (keyPoints[1][k] < noduleMaxY)):
 							keyClasses.append(True) # is LN
 						else:
