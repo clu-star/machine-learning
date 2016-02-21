@@ -118,9 +118,9 @@ def split(list,numsplits):
 	splits = []
 	nextadd = 0
 	for i in range(0,numsplits):
-		split.append([])
+		splits.append([])
 		for j in range(nextadd,nextadd + imgsPerSplit):
-			split[i].append(list[j])
+			splits[i].append(list[j])
 		nextadd = nextadd + imgsPerSplit
 	return splits
 # end split
