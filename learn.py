@@ -72,7 +72,7 @@ def predict(model,img):
 					probLN = probLN + currCenterDistances[j]
 				else:
 					probNN = probNN + currCenterDistances[j]
-			currPrediction = [probLN probNN]
+			currPrediction = [probLN,probNN]
 			# if this is most similar to nodule so far...
 			if (currPrediction[0] > predictions[0]):
 				predictions = currPrediction
