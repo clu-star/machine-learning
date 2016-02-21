@@ -41,7 +41,7 @@ class img:
 
 	self.cvdata = []
 	reader = csv.reader('descriptions/'+filename, 0)
-	print filename
+	print (filename)
 	for row in reader:
 		self.cvdata.append(map(float,row))
 	self.cvdata = np.array(self.cvdata)
