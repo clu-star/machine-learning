@@ -44,7 +44,7 @@ class img:
 	for row in reader:
 		self.cvdata.append(row)
 	self.cvdata = np.array(self.cvdata)
-	np.hsplit(self.cvdata,128)
+	np.hsplit(self.cvdata,np.array([128,4]))
 	self.auxdata = self.cvdata[1] # 4-vector for each feature: row, col, scale, orientation
 	self.cvdata = self.cvdata[0] # 128-vector for feature description
 
