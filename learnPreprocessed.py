@@ -40,13 +40,15 @@ class img:
 		    break;
 
 	self.cvdata = []
+	self.auxdata = []
 	file2 = open('descriptions/'+filename,"rb")
 	reader = csv.reader(file2)
 	for row in reader:
 		self.cvdata.append(map(float,row))
 	self.cvdata = np.array(self.cvdata)
-	self.auxdata = self.cvdata[:,128:132] # 4-vector for each feature: row, col, scale, orientation
-	self.cvdata = self.cvdata[:,0:128] # 128-vector for feature description
+	if len(self.cvdata)
+		self.auxdata = self.cvdata[:,128:132] # 4-vector for each feature: row, col, scale, orientation
+		self.cvdata = self.cvdata[:,0:128] # 128-vector for feature description
 
 # model class - stores the model fit and centers
 class Model:
