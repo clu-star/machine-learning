@@ -49,7 +49,7 @@ def softmax(w,t=1.0):
 
 # from a model and an image, determine if that image contains nodules
 def predict(model,img):
-	predictions = [0 0]
+	predictions = [0,0]
 	# get img features
 	sift = cv2.xfeatures2d.SIFT_create()
 	keyPoints,descriptors = sift.detectAndCompute(img,None)
