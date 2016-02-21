@@ -208,7 +208,7 @@ def main(list):
 			a = img(x)
 			featurearray.append(a)
 			print(a.filename + ": Has nodule: " + str(a.hasNodule) + " of size: " + str(a.noduleSize) + " at x,y: " + str(a.noduleX) + ", " + str(a.noduleY))
-		print('imgarray.length: ' + str(len(imgarray)))
+		print('imgarray.length: ' + str(len(featurearray)))
 		# do learning
 		numsplits = 13 # there will be 19 images per split
 		splits = split(featurearray,numsplits)
