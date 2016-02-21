@@ -152,8 +152,8 @@ def train(splits,numsplits):
 					keyClasses = []
 					# classify the features based on if they are located
 					# where we expect nodules to be
-					noduleMinY = splits[i][j].noduleX - splits[i][j].noduleSize*PXperCM/2.0
-					noduleMaxY = splits[i][j].noduleX + splits[i][j].noduleSize*PXperCM/2.0
+					noduleMinX = splits[i][j].noduleX - splits[i][j].noduleSize*PXperCM/2.0
+					noduleMaxX = splits[i][j].noduleX + splits[i][j].noduleSize*PXperCM/2.0
 					noduleMinY = splits[i][j].noduleY - splits[i][j].noduleSize*PXperCM/2.0
 					noduleMaxY = splits[i][j].noduleY + splits[i][j].noduleSize*PXperCM/2.0
 					for k in range(0,len(keyPoints[0])):
