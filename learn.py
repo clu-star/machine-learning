@@ -34,9 +34,9 @@ class img:
 	    reader = csv.reader(file)
 	    for row in reader:
 		if row[0].startswith(filename):
-	    	    self.noduleSize = row[2]
-	    	    self.noduleX = row[5]
-	    	    self.noduleY = row[6]
+	    	    self.noduleSize = float(row[2])
+	    	    self.noduleX = int(row[5])
+	    	    self.noduleY = int(row[6])
 		    break;
 
 	self.cvdata = cv2.imread('data_pngs/'+filename, 0)
