@@ -194,8 +194,8 @@ def train(splits,numsplits):
 def main(list):
 	# takes in one user parameter: output filename
 	if len(sys.argv) != 2 :
-        print("usage: python learn.py <output-filename>")
-    else:
+		print("usage: python learn.py <output-filename>")
+	else:
 		# read images
 		files = os.listdir("./data_pngs")
 		imgarray = []
