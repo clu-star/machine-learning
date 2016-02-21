@@ -149,7 +149,8 @@ def train(splits,numsplits):
 				for j in range(0,len(splits[i])): # for each img in split
 					# detect features with SIFT
 					descriptors = splits[i][j].cvdata
-					keyPoints = []
+					keyPointsX = []
+					keyPointsY = []
 					haskeys = False
 					if len(splits[i][j].auxdata):
 						hasKeys = True
