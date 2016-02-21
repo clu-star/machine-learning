@@ -30,7 +30,7 @@ class img:
 	if(filename.startswith('JPCLN')):
 	    self.hasNodule = True
 
-	    file = open('data.csv', "rb")
+	    file = open('../data.csv', "rb")
 	    reader = csv.reader(file)
 	    for row in reader:
 		if row[0].startswith(filename):
@@ -76,7 +76,8 @@ def softmax(w,t=1.0):
 def predict(model,img):
 	predictions = [0,0]
 	# get img features
-	sift = cv2.xfeatures2d.SIFT_create()
+	#sift = cv2.xfeatures2d.SIFT_create()
+	sift = cv2.SIFT()
 	keyPoints,descriptors = sift.detectAndCompute(img,None)
 	desc = np.reshape(descriptors,(len(descriptors)/128,128))
 	# compare each feature with model cluster centers
@@ -199,7 +200,7 @@ def main(list):
 		print("usage: python learn.py <output-filename>")
 	else:
 		# read images
-		files = os.listdir("./data_pngs")
+		files = os.listdir("../data_pngs")
 		imgarray = []
 		for x in files:
 			a = img(x)
