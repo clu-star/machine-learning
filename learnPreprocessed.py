@@ -40,9 +40,8 @@ class img:
 		    break;
 
 	self.cvdata = []
-	reader = csv.reader('descriptions/'+filename, 0)
+	reader = csv.reader(('descriptions/'+filename), "rb")
 	for row in reader:
-		print row
 		self.cvdata.append(map(float,row))
 	self.cvdata = np.array(self.cvdata)
 	self.auxdata = self.cvdata[:,124:128] # 4-vector for each feature: row, col, scale, orientation
@@ -205,7 +204,6 @@ def main(list):
 		files = os.listdir("./descriptions")
 		featurearray = []
 		for x in files:
-			print(x)
 			a = img(x)
 			featurearray.append(a)
 			print(a.filename + ": Has nodule: " + str(a.hasNodule) + " of size: " + str(a.noduleSize) + " at x,y: " + str(a.noduleX) + ", " + str(a.noduleY))
