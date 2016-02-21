@@ -6,6 +6,9 @@ import Math
 import random
 import cv2
 import numpy as np
+from operator import add
+from operator import mul
+from operator import div
 
 PXperCM = 683
 
@@ -19,6 +22,12 @@ class Model:
 		self.score = score
 		self.weights = []
 		self.centers = []
+		
+	def printout():
+		outstring = str(self.score)
+		outstring = outstring + ' [' + ','.join(self.weights) + '] '
+		outstring = outstring + ' [' + ','.join(self.centers) + '] '
+		return outstring
 # end class model
 
 #============
@@ -27,14 +36,12 @@ class Model:
 
 # helper math evaluation stuff for test eval
 npa = np.array
-
 # use softmax to evaluate the cross-entropy loss from the classifiers
 def softmax(w,t=1.0):
 	e = np.exp(npa(w)/t)
 	dist = e/np.sum(e)
 	return dist
 # end softmax
-
 
 #=====================
 # prediction functions
@@ -44,28 +51,31 @@ def softmax(w,t=1.0):
 def predict(model,img):
 	predictions = [0 0]
 	# get img features
-	features = SIFT DETECTOR (____)
+	sift = cv2.xfeatures2d.SIFT_create()
+	keyPoints,descriptors = sift.detectAndCompute(img,None)
+	desc = np.reshape(descriptors,(len(descriptors)/128,128))
 	# compare each feature with model cluster centers
 	mostSimilarToNoduleScore = 0 # the most nodule-like element
-	for i in range(0,len(features)): # for each detected feature...
-		currCenterDistances = []
-		# find distances to each cluster center
-		for j in range(0,len(model.centers)):
-			
-			.... problem: which feature is the one we care about?______
-			__________need to multiply by image weight or 1-cluster weight
-		currCenterDistances = softmax(currCenterDistances);
-		probLN = 0;
-		probNN = 0;
-		for j in range(0,len(model.centers)):
-			if model.centers[j].isNodule:
-				probLN = probLN + currCenterDistances[j]
-			else:
-				probNN = probNN + currCenterDistances[j]
-		currPrediction = [probLN probNN]
-		# if this is most similar to nodule so far...
-		if (currPrediction[0] > predictions[0]):
-			predictions = currPrediction
+	for j in range(0,len(descriptors)):
+		for i in range(0,len(features)): # for each detected feature...
+			currCenterDistances = []
+			# find distances to each cluster center
+			for j in range(0,len(model.centers)):
+				arr = map(mul,model.centers[i],model.weights[i])
+				arr = map(mul,arr,descriptors[i])
+				currCenterDistances.append(sum(arr))
+			currCenterDistances = softmax(currCenterDistances);
+			probLN = 0;
+			probNN = 0;
+			for j in range(0,len(model.centers)):
+				if model.centers[j].isNodule:
+					probLN = probLN + currCenterDistances[j]
+				else:
+					probNN = probNN + currCenterDistances[j]
+			currPrediction = [probLN probNN]
+			# if this is most similar to nodule so far...
+			if (currPrediction[0] > predictions[0]):
+				predictions = currPrediction
 	return predictions
 	
 # end predict
@@ -93,7 +103,7 @@ def split(list,numsplits):
 
 # takes in split data
 # outputs model in the form
-# <score, cluster-1-LN-probability, cluster-1-center, ....., cluster-n--LN-probability, cluster-n-center>
+# score [cluster-1-LN-probability,..., cluster-n--LN-probability] [cluster-1-center,...,cluster-n-center]
 # where each of the above vector elements is a list/array
 def train(splits,numsplits):
 	models = []
@@ -110,29 +120,49 @@ def train(splits,numsplits):
 					keyClasses = []
 					# classify the features based on if they are located
 					# where we expect nodules to be
-					noduleminx = splits[i][j].noduleX - splits[i][j].noduleSize/2.0
-					nodulemaxx = splits[i][j].noduleX + splits[i][j].noduleSize/2.0
-					noduleminy = splits[i][j].noduleY - splits[i][j].noduleSize/2.0
-					nodulemaxy = splits[i][j].noduleY + splits[i][j].noduleSize/2.0
+					noduleminx = splits[i][j].noduleX - splits[i][j].noduleSize*PXperCM/2.0
+					nodulemaxx = splits[i][j].noduleX + splits[i][j].noduleSize*PXperCM/2.0
+					noduleminy = splits[i][j].noduleY - splits[i][j].noduleSize*PXperCM/2.0
+					nodulemaxy = splits[i][j].noduleY + splits[i][j].noduleSize*PXperCM/2.0
 					for k in range(0,len(keyPoints)):
 						if ((keyPoints[k].x > noduleMinX) && (keyPoints[k].x < noduleMaxX) && (keyPoints[k].y > noduleMinY) && (keyPoints[k].y < noduleMaxY)):
-							keyClasses.append(True)
+							keyClasses.append(True) # is LN
 						else:
-							keyClasses.append(False)
+							keyClasses.append(False) # is NN (not nodule)
 					allKeyPoints = np.append(allKeyPoints,keyPoints)
 					allDescriptors = np.append(allDescriptors,descriptors)
 					allKeyClasses = np.append(allKeyClasses,keyClasses)
 		# k-means cluster all features
+		desc = np.reshape(allDescriptors,(len(allDescriptors)/128,128))
+		desc = np.float32(desc)
+		criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER,20,1.0)
+		flags = cv2.KMEANS_RANDOM_CENTERS
 		currmodel = Model() # create a Model object
-		compactness,labels,currmodel.clusters = cv2.kmeans()____
-		____________parse model probs
-		curmodel.weights = []
+		compactness,labels,currmodel.clusters = cv2.kmeans(desc,40,None,criteria,20,flags)
+		# parse model probabilities at each cluster
+		countLN = []
+		countNN = []
+		for i in range(0,len(labels)):
+			if (labels[i] >= len(countLN)):
+					while (labels[i] >= len(countLN)):
+						countLN.append(0)
+						countNN.append(0)
+			if allKeyClasses[i]:
+				countLN[labels[i]] = countLN[labels[i]] + 1
+			else:
+				countNN[labels[i]] = countNN[labels[i]] + 1
+		curmodel.weights = map(add,countLN,countNN)
+		curmodel.weights = map(div,countLN,curmodel.weights)
 		# run and evaluate test data
-		weights = [];
+		scoreWeights = [];
 		for i in range(0,len(splits(testSplit)):
 			# test against model
-			weights = predict(currmodel,splits[testSplit][i])
-		currmodel.score = softmax(weights)
+			prediction = predict(currmodel,splits[testSplit][i])
+			if (splits[testSplit][i].hasNodule):
+				scoreWeights.append(prediction[0])
+			else:
+				scoreWeights.append(prediction[1])
+		currmodel.score = (1/numSplits)*sum(scoreWeights)
 		models.append(currmodel)
 	return models
 # end train
@@ -144,8 +174,7 @@ def main(list):
 	models = train(splits,numsplits)
 	target = open(outfile,'w')
 	for i in range(0,len(models)):
-		for j in range(0,len(models[i])):
-			target.write('[' + models[i][j] + '] ');
+		target.write(models[i].printout());
 	
 # end main
 
