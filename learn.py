@@ -21,7 +21,7 @@ PXperCM = 683
 class img:
     def __init__(self, filename):
         self.filename = filename
-		self.hasNodule = False
+	self.hasNodule = False
         self.noduleSize = 0 
         self.noduleX = 0
         self.noduleY = 0
