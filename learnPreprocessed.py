@@ -202,11 +202,9 @@ def main(list):
 	else:
 		# read images
 		files = os.listdir("./descriptions")
-		print("foo")
 		featurearray = []
-		print("hhh")
 		for x in files:
-			print(x)
+			print(files(x))
 			a = img(x)
 			featurearray.append(a)
 			print(a.filename + ": Has nodule: " + str(a.hasNodule) + " of size: " + str(a.noduleSize) + " at x,y: " + str(a.noduleX) + ", " + str(a.noduleY))
