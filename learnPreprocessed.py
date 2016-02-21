@@ -190,10 +190,7 @@ def train(splits,numsplits):
 		for i in range(0,len(splits[testSplit])):
 			# test against model
 			prediction = predict(currmodel,splits[testSplit][i])
-			if (splits[testSplit][i].hasNodule):
-				scoreWeights.append(prediction[0])
-			else:
-				scoreWeights.append(prediction[1])
+			scoreWeights.append(prediction)
 		currmodel.score = (1/numsplits)*sum(scoreWeights)
 		models.append(currmodel)
 	return models
