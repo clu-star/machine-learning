@@ -42,6 +42,7 @@ class img:
 	self.cvdata = []
 	reader = csv.reader('descriptions/'+filename, 0)
 	for row in reader:
+		print row
 		self.cvdata.append(map(float,row))
 	self.cvdata = np.array(self.cvdata)
 	self.auxdata = self.cvdata[:,124:128] # 4-vector for each feature: row, col, scale, orientation
@@ -203,7 +204,6 @@ def main(list):
 		# read images
 		files = os.listdir("./descriptions")
 		featurearray = []
-		print files
 		for x in files:
 			print(x)
 			a = img(x)
