@@ -2,6 +2,7 @@
 # 	N = number of images
 #	X*Y = dimensions of each image
 
+import sys
 import math
 import random
 import cv2
