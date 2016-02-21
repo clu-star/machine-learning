@@ -5,6 +5,8 @@
 import Math
 import random
 import cv2
+import os
+import csv
 import numpy as np
 from operator import add
 from operator import mul
@@ -15,6 +17,28 @@ PXperCM = 683
 #===================
 # class declarations
 #===================
+class img:
+    def __init__(self, filename):
+        self.filename = filename
+	self.hasNodule = False
+        self.noduleSize = 0 
+        self.noduleX = 0
+        self.noduleY = 0
+		
+	# node
+	if(filename.startswith('JPCLN')):
+	    self.hasNodule = True
+
+	    file = open('data.csv', "rb")
+	    reader = csv.reader(file)
+	    for row in reader:
+		if row[0].startswith(filename):
+	    	    self.noduleSize = row[2]
+	    	    self.noduleX = row[5]
+	    	    self.noduleY = row[6]
+		    break;
+
+	self.cvdata = cv2.imread('data_pngs/'+filename, 0)
 
 # model class - stores the model fit and centers
 class Model:
@@ -168,14 +192,25 @@ def train(splits,numsplits):
 # end train
 
 def main(list):
-	# takes in two user parameters: number of splits and output filename
-	numsplits = 13 # there will be 19 images per split
-	splits = split(list,numsplits)
-	models = train(splits,numsplits)
-	target = open(outfile,'w')
-	for i in range(0,len(models)):
-		target.write(models[i].printout());
-	
+	# takes in one user parameter: output filename
+	if len(sys.argv) != 2 :
+        print("usage: python learn.py <output-filename>")
+    else:
+		# read images
+		files = os.listdir("./data_pngs")
+		imgarray = []
+		for x in files:
+			a = img(x)
+			imgarray.append(a)
+			print(a.filename + ": Has nodule: " + str(a.hasNodule) + " of size: " + str(a.noduleSize) + " at x,y: " + str(a.noduleX) + ", " + str(a.noduleY))
+		print('imgarray.length: ' + str(len(imgarray)))
+		# do learning
+		numsplits = 13 # there will be 19 images per split
+		splits = split(imgarray,numsplits)
+		models = train(splits,numsplits)
+		target = open(outfile,'w')
+		for i in range(0,len(models)):
+			target.write(models[i].printout());
 # end main
 
-main(list):
+main(list)
