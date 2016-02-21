@@ -43,6 +43,7 @@ class img:
 	file2 = open('descriptions/'+filename,"rb")
 	reader = csv.reader(file2)
 	for row in reader:
+		print row
 		self.cvdata = zip(self.cvdata,map(float,row))
 	self.cvdata = np.array(self.cvdata)
 	print len(self.cvdata)
