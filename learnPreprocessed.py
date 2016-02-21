@@ -39,7 +39,7 @@ class img:
 	    	    self.noduleY = row[6]
 		    break;
 
-	self.cvdata = csv.reader('descriptions/'+filename, 0)
+	self.cvdata = np.array(csv.reader('descriptions/'+filename, 0))
 	np.hsplit(self.cvdata,128)
 	self.auxdata = self.cvdata[1] # 4-vector for each feature: row, col, scale, orientation
 	self.cvdata = self.cvdata[0] # 128-vector for feature description
