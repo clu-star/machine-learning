@@ -211,7 +211,7 @@ def main(list):
 		print('imgarray.length: ' + str(len(imgarray)))
 		# do learning
 		numsplits = 13 # there will be 19 images per split
-		splits = split(imgarray,numsplits)
+		splits = split(featurearray,numsplits)
 		models = train(splits,numsplits)
 		target = open(outfile,'w')
 		for i in range(0,len(models)):
