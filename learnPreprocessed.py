@@ -154,7 +154,7 @@ def train(splits,numsplits):
 					noduleminy = splits[i][j].noduleY - splits[i][j].noduleSize*PXperCM/2.0
 					nodulemaxy = splits[i][j].noduleY + splits[i][j].noduleSize*PXperCM/2.0
 					for k in range(0,len(keyPoints)):
-						if ((keyPoints[k][0] > noduleMinX) and (keyPoints[k][0] < noduleMaxX) and (keyPoints[k][2] > noduleMinY) and (keyPoints[k][2] < noduleMaxY)):
+						if ((keyPoints[k][0] > noduleMinX) and (keyPoints[k][0] < noduleMaxX) and (keyPoints[k][1] > noduleMinY) and (keyPoints[k][1] < noduleMaxY)):
 							keyClasses.append(True) # is LN
 						else:
 							keyClasses.append(False) # is NN (not nodule)
