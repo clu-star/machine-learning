@@ -57,7 +57,7 @@ class Model:
 		self.weights = []
 		self.centers = []
 		
-	def printout():
+	def printout(self):
 		outstring = str(self.score)
 		outstring = outstring + ' [' + ','.join(self.weights) + '] '
 		outstring = outstring + ' [' + ','.join(self.centers) + '] '
