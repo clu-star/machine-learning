@@ -147,10 +147,10 @@ def train(splits,numsplits):
 					keyClasses = []
 					# classify the features based on if they are located
 					# where we expect nodules to be
-					noduleminx = splits[i][j].noduleX - splits[i][j].noduleSize*PXperCM/2.0
-					nodulemaxx = splits[i][j].noduleX + splits[i][j].noduleSize*PXperCM/2.0
-					noduleminy = splits[i][j].noduleY - splits[i][j].noduleSize*PXperCM/2.0
-					nodulemaxy = splits[i][j].noduleY + splits[i][j].noduleSize*PXperCM/2.0
+					noduleMinX = splits[i][j].noduleX - splits[i][j].noduleSize*PXperCM/2.0
+					noduleMaxX = splits[i][j].noduleX + splits[i][j].noduleSize*PXperCM/2.0
+					noduleMinY = splits[i][j].noduleY - splits[i][j].noduleSize*PXperCM/2.0
+					noduleMaxY = splits[i][j].noduleY + splits[i][j].noduleSize*PXperCM/2.0
 					for k in range(0,len(keyPoints)):
 						if ((keyPoints[k].x > noduleMinX) and (keyPoints[k].x < noduleMaxX) and (keyPoints[k].y > noduleMinY) and (keyPoints[k].y < noduleMaxY)):
 							keyClasses.append(True) # is LN
