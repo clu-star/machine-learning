@@ -92,10 +92,10 @@ def predict(model,image):
 		currCenterDistances = []
 		# find distances to each cluster center
 		for j in range(0,len(model.centers)):
-			arr = map(mul,model.centers[i],model.weights[i])
+			arr = map(mul,model.weights[i],model.centers[i])
 			arr = map(mul,arr,descriptors[i])
 			currCenterDistances.append(sum(arr))
-		currCenterDistances = softmax(currCenterDistances);
+		currCenterDistances = softmax(currCenterDistances)
 		probLN = 0;
 		probNN = 0;
 		for j in range(0,len(model.centers)):
