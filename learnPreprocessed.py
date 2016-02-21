@@ -99,7 +99,7 @@ def predict(model,image):
 		probLN = 0;
 		probNN = 0;
 		for j in range(0,len(model.centers)):
-			if model.centers[j].isNodule:
+			if model.centers[j].hasNodule:
 				probLN = probLN + currCenterDistances[j]
 			else:
 				probNN = probNN + currCenterDistances[j]
