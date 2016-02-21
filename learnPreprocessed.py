@@ -64,7 +64,7 @@ class Model:
 		return outstring
 		
 	def normalize(self):
-		for i in range(0,len(centers)):
+		for i in range(0,len(self.centers)):
 			self.centers[i] = self.centers[i]/math.sqrt(sum(map(mul,self.centers[i],self.centers[i])))
 # end class model
 
