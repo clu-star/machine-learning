@@ -175,6 +175,10 @@ def train(splits,numsplits):
 		# parse model probabilities at each cluster
 		countLN = []
 		countNN = []
+		print len(labels)
+		print len(allKeyClasses)
+		print len(allKeyPoints)
+		print len(allDescriptors)
 		for i in range(0,len(labels)):
 			if (labels[i] >= len(countLN)):
 					while (labels[i] >= len(countLN)):
