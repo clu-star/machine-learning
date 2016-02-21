@@ -226,7 +226,7 @@ def main(list):
 		models = train(splits,numsplits)
 		target = open(outfile,'w')
 		for i in range(0,len(models)):
-			target.write(models[i].printout);
+			target.write(str(models[i].printout));
 # end main
 
 main(list)
