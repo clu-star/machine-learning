@@ -30,7 +30,7 @@ class img:
 	if(filename.startswith('JPCLN')):
 	    self.hasNodule = True
 
-	    file = open('data.csv', "rb")
+	    file = open('../data.csv', "rb")
 	    reader = csv.reader(file)
 	    for row in reader:
 		if row[0].startswith(filename):
@@ -76,7 +76,8 @@ def softmax(w,t=1.0):
 def predict(model,img):
 	predictions = [0,0]
 	# get img features
-	sift = cv2.xfeatures2d.SIFT_create()
+	#sift = cv2.xfeatures2d.SIFT_create()
+	sift = cv2.SIFT()
 	keyPoints,descriptors = sift.detectAndCompute(img,None)
 	desc = np.reshape(descriptors,(len(descriptors)/128,128))
 	# compare each feature with model cluster centers
@@ -140,8 +141,10 @@ def train(splits,numsplits):
 			if (i != testSplit):
 				for j in range(0,len(splits[i])): # for each img in split
 					# detect features with SIFT
-					sift = cv2.xfeatures2d.SIFT_create()
-					keyPoints,descriptors = sift.detectAndCompute(splits[i][j],None)
+					#sift = cv2.xfeatures2d.SIFT_create()
+					#sift = cv2.SIFT()
+					#keyPoints,descriptors = sift.detectAndCompute(splits[i][j],None)
+					keyPoints,descriptors = cv2.SIFT().detectAndCompute(splits[i][j],None)
 					keyClasses = []
 					# classify the features based on if they are located
 					# where we expect nodules to be
@@ -198,7 +201,7 @@ def main(list):
 		print("usage: python learn.py <output-filename>")
 	else:
 		# read images
-		files = os.listdir("./data_pngs")
+		files = os.listdir("../data_pngs")
 		imgarray = []
 		for x in files:
 			a = img(x)
