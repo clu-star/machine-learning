@@ -191,7 +191,7 @@ def train(splits,numsplits):
 			# test against model
 			prediction = predict(currmodel,splits[testSplit][i])
 			scoreWeights.append(prediction)
-		currmodel.score = (1/numsplits)*sum(scoreWeights)
+		currmodel.score = (1/float(numsplits))*sum(map(float,scoreWeights))
 		models.append(currmodel)
 	return models
 # end train
