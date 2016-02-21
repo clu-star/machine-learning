@@ -30,7 +30,7 @@ class img:
 	if(filename.startswith('JPCLN')):
 	    self.hasNodule = True
 
-	    file = open('../data.csv', "rb")
+	    file = open('data.csv', "rb")
 	    reader = csv.reader(file)
 	    for row in reader:
 		if row[0].startswith(filename):
@@ -39,7 +39,10 @@ class img:
 	    	    self.noduleY = row[6]
 		    break;
 
-	self.cvdata = cv2.imread('data_pngs/'+filename, 0)
+	self.cvdata = csv.reader('descriptions/'+filename, 0)
+	np.hsplit(self.cvdata,128)
+	self.auxdata = self.cvdata[1] # 4-vector for each feature: row, col, scale, orientation
+	self.cvdata = self.cvdata[0] # 128-vector for feature description
 
 # model class - stores the model fit and centers
 class Model:
@@ -73,13 +76,10 @@ def softmax(w,t=1.0):
 #=====================
 
 # from a model and an image, determine if that image contains nodules
-def predict(model,img):
+def predict(model,image):
 	predictions = [0,0]
 	# get img features
-	#sift = cv2.xfeatures2d.SIFT_create()
-	sift = cv2.SIFT()
-	keyPoints,descriptors = sift.detectAndCompute(img,None)
-	desc = np.reshape(descriptors,(len(descriptors)/128,128))
+	descriptors = image.cvdata
 	# compare each feature with model cluster centers
 	mostSimilarToNoduleScore = 0 # the most nodule-like element
 	for j in range(0,len(descriptors)):
@@ -141,9 +141,8 @@ def train(splits,numsplits):
 			if (i != testSplit):
 				for j in range(0,len(splits[i])): # for each img in split
 					# detect features with SIFT
-					sift = cv2.xfeatures2d.SIFT_create()
-					keyPoints,descriptors = sift.detectAndCompute(splits[i][j],None)
-					#keyPoints,descriptors = cv2.SIFT().detectAndCompute(splits[i][j],None)
+					descriptors = splits[i][j].cvdata
+					keypoints = [splits[i][j].auxdata[0],splits[i][j].auxdata[1]]
 					keyClasses = []
 					# classify the features based on if they are located
 					# where we expect nodules to be
@@ -152,7 +151,7 @@ def train(splits,numsplits):
 					noduleminy = splits[i][j].noduleY - splits[i][j].noduleSize*PXperCM/2.0
 					nodulemaxy = splits[i][j].noduleY + splits[i][j].noduleSize*PXperCM/2.0
 					for k in range(0,len(keyPoints)):
-						if ((keyPoints[k].x > noduleMinX) and (keyPoints[k].x < noduleMaxX) and (keyPoints[k].y > noduleMinY) and (keyPoints[k].y < noduleMaxY)):
+						if ((keyPoints[k][0] > noduleMinX) and (keyPoints[k][0] < noduleMaxX) and (keyPoints[k][2] > noduleMinY) and (keyPoints[k][2] < noduleMaxY)):
 							keyClasses.append(True) # is LN
 						else:
 							keyClasses.append(False) # is NN (not nodule)
@@ -160,8 +159,7 @@ def train(splits,numsplits):
 					allDescriptors = np.append(allDescriptors,descriptors)
 					allKeyClasses = np.append(allKeyClasses,keyClasses)
 		# k-means cluster all features
-		desc = np.reshape(allDescriptors,(len(allDescriptors)/128,128))
-		desc = np.float32(desc)
+		desc = np.float32(allDescriptors)
 		criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER,20,1.0)
 		flags = cv2.KMEANS_RANDOM_CENTERS
 		currmodel = Model() # create a Model object
@@ -200,11 +198,11 @@ def main(list):
 		print("usage: python learn.py <output-filename>")
 	else:
 		# read images
-		files = os.listdir("../data_pngs")
-		imgarray = []
+		files = os.listdir("./descriptions")
+		featurearray = []
 		for x in files:
 			a = img(x)
-			imgarray.append(a)
+			featurearray.append(a)
 			print(a.filename + ": Has nodule: " + str(a.hasNodule) + " of size: " + str(a.noduleSize) + " at x,y: " + str(a.noduleX) + ", " + str(a.noduleY))
 		print('imgarray.length: ' + str(len(imgarray)))
 		# do learning
