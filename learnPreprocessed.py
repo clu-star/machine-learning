@@ -195,7 +195,7 @@ def train(splits,numsplits):
 		currmodel.weights = map(div,countLN,currmodel.weights)
 		# run and evaluate test data
 		scoreWeights = [];
-		for i in range(0,len(splits(testSplit))):
+		for i in range(0,len(splits[testSplit])):
 			# test against model
 			prediction = predict(currmodel,splits[testSplit][i])
 			if (splits[testSplit][i].hasNodule):
